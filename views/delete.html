@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete confirm</title>
+</head>
+<body>
+    <h1>delete Confirm window</h1>
+    <p>
+        정말 삭제하시겠습니까?
+    <div class="btn-group">
+        <button type="button" id="cancel-btn" onclick="window.close()">Cancel</button>
+        <input type="button" value = "Delete" id = "btn" onclick = "realdelete()" />
+    </div>
+    </p>
+    <script>
+
+        function realdelete(){
+        var name = getUrlValue();
+        var temp_name = name.split('.');
+        //var tempstr = realdelete();
+        console.log(temp_name[0]);
+        console.log('realdelete=' + name);
+        window.location = '/delete/' +name ;
+    }
+    function getUrlValue(key) {
+        console.log(key);
+        var valueObject = {}, hash, value;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?'));
+        console.log(hashes);
+        hash = hashes.split('=');
+        //console.log(hash);
+        valueObject[hash] = hash[1];
+        //console.log(valueObject[hash]);
+        num = valueObject[hash];
+        if (key) {
+
+            if (valueObject[key]) {
+                return valueObject[key];
+            }
+
+            return "";
+        }
+        console.log(valueObject);
+        return valueObject[hash];
+    }</script>
+
+</body>
+</html>

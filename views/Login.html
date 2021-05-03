@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src = "https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <input type = "button" value = "다음페이지로" onclick = "location.href = 'https://accounts.kakao.com/'"/><BR>
+    <a id="kakao-login-btn"></a> <BR>
+    <input type="button" value = '로그아웃1' onclick= "location.href ='logout'"/>
+    <button onclick= {this.logoutWithKakao}>카카오 로그아웃2</button>
+    <button type = "submit"  formmethod = 'post' action="logout" >카카오 로그아웃3</button>
+    <a href ="https://developer.kakao.com/logout">로그 아웃4</a>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src = "https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src = "https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+        $.ajax({
+            url:
+        })
+    </script>
+    <script type='text/javascript'>
+
+        Kakao.init('80e5abfb56863750bf6f10cda2bb7cfe'); //아까 카카오개발자홈페이지에서 발급받은 자바스크립트 키를 입력함
+
+        function logoutWithKakao()
+        {
+            Kakao.isInitialized();
+
+            if (!Kakao.Auth.getAccessToken()) {
+                console.log('Not logged in');
+                return;
+            }
+            Kakao.Auth.logout(function () {
+                console.log('Not logged in.');
+            });
+        }
+
+        //카카오 로그인 버튼을 생성합니다.
+        Kakao.Auth.createLoginButton({
+
+            container: '#kakao-login-btn',
+            success: function(authObj) { //authObj가 참일때, 자료를 성공적으로 보냈을때 출력되는 부분
+                setCookie("kakao_login","done",1); // 쿠키생성 (로그인)
+                Kakao.API.request({
+
+                    url: '/v2/user/me',
+
+                    success: function(res) { //res가 참일때, 자료를 성공적으로 보냈을때 출력되는 부분
+
+                        console.log(res.id);//<---- 콘솔 로그에 id 정보 출력(id는 res안에 있기 때문에  res.id 로 불러온다)
+
+                       console.log(res.kaccount_email);//<---- 콘솔 로그에 email 정보 출력 (어딨는지 알겠죠?)
+
+                        console.log(res.properties['nickname']);//<---- 콘솔 로그에 닉네임 출력(properties에 있는 nickname 접근
+
+                        // res.properties.nickname으로도 접근 가능 )
+                        console.log(authObj.access_token);//<---- 콘솔 로그에 토큰값 출력
+
+                        var kakaonickname = res.properties.nickname;    //카카오톡 닉네임을 변수에 저장
+                        var kakaoe_mail = res.properties.kakao_account_email;    //카카오톡 이메일을 변수에 저장함
+                        var image = res.properties.profile_image;
+                        var html = '<BR>' +  '<BR>' + kakaonickname;
+                        console.log(html);
+                        console.log(kakaoe_mail);
+                        console.log(image);
+                        html += '<BR><img src = "' + image +'">';
+
+                        $('body').append(html);
+                        //alert('로그인에 성공했습니다!');
+                        //window.location.href = '/';
+                        //카카오톡의 닉네임과,mail을 url에 담아 같이 페이지를 이동한다.
+                        //window.location.replace("http://" + window.location.hostname + ( (location.port==""||location.port==undefined)?"":":" + location.port) + "/hansub_project/home?kakaonickname="+kakaonickname+"&kakaoe_mail="+kakaoe_mail);
+
+                    }
+                })
+            },
+            fail: function(error) { //에러 발생시 에러 메시지를 출력한다.
+                alert(JSON.stringify(error));
+            }
+        });
+      /*
+       logoutWithKakao  = () =>{
+            if(Kakao.Auth.getAccessToken()){
+                console.log('카카오 인증 액세스 토큰이 존재합니다.',Kakao.Auth.getAccessToken());
+                Kakao.Auth.logout(() => {
+                    console.log('로그아웃 되었습니다.',Kakao.Auth.getAccessToken());
+                    this.setState({
+                        isLogin: false
+                    })
+                });
+            }
+        }
+       */
+
+        function setCookie(name, value,expired){
+            var date = new Date();
+            date.setHours(date.getHours() + expired);
+            var expried_set = "express=" + date.toGMTString();
+            document.cookie = name + '=' + value + ";path=/;" + expried_set + ";"
+        }
+    </script>
+    <!-- <script src="js/logout.js"></script> -->
+
+
+
+</body>
+</html>

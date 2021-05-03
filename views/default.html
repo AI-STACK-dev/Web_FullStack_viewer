@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <title>ImageUploader</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    <!--- <link rel="stylesheet" href="css/loading.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+        .changeColor{
+            background-color:#bff0ff;
+        }
+        .photo_img1{
+            max-width: 100%;
+            height: auto;
+        }
+        thead{
+            background-color:#04B4AE;
+        }
+        th{
+            position: sticky;
+            top: 0px;
+            background-color:#04B4AE !important;
+        }
+        #js-btn{
+            margin: 10px;
+        }
+        #viewer-btn{
+            margin: 10px;
+        }
+        #delete-btn{
+            margin:10px;
+        }
+        #update-btn{
+            margin:10px;
+        }
+        table{
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<header class="page-header">
+    <h1 class="page-title">
+        <a href="./">Image uploader</a>
+        <a href="./uploader.html">Uploader page</a>
+       <!-- <a href = "./Login.html">Login page</a> -->
+        <!-- <a href = "./test.html">Login page</a> -->
+        <!-- <a href = "./python_test.html">python test</a> -->
+        <a href ="./biomedical_login.html">BME Login</a>
+    </h1>
+    <!-- <button class="slide-btn">슬라이드 쇼</button> -->
+</header>
+<div class="container">
+    <div class="row">
+        <article class="photo-gallery">
+            <h2 class="blind">포토 갤러리</h2>
+            <ul class="ajax-result">
+                <h1>TableView</h1>
+                <div id="search-form">
+                   🔍검색: <input type="text" id="keyword" placeholder="Type to search">
+                </div>
+            </ul>
+        </article>
+
+
+        <p id = "test"></p>
+        <form name="popForm">
+            <input type="hidden" name="cmd" value="openPop" />
+            <input type="hidden" name="testval" />
+        </form>
+
+    </div>
+</div>
+<footer class="page-footer">
+    <h2 class="footer-title"><a href="./">© 2021 image uploader</a></h2>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/gallery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        changeColor();
+        getupdate();
+        getviewer();
+        getfiledown();
+        getdelete();
+        clicktr();
+        search();
+    })
+
+    function changeColor(){
+        $('.table tr').mouseover(function(){
+            $(this).addClass('changeColor');
+        }).mouseout(function(){
+            $(this).removeClass('changeColor');
+        });
+    }
+    function clicktr(){
+        $(".table tr").dblclick(function(){
+            var tr = $(this);
+            var td = tr.children();
+            var name = td.eq(3).text();
+
+
+            openWin = window.open("viewer.html?name="+name,"viewer","width=1200, height=1000, resizable = no, scrollbars = no");
+
+        });
+    }
+    function getupdate(){
+        $(".table tr #update-btn").click(function(num){
+           var tr = $(this).parent().parent();
+           var td = tr.children();
+           var name = td.eq(3).text();
+          //openWin = window.open("update.html?name="+ name,"update","width=1000, height=1000, resizable = no,scrollbars = no");
+            //openWin = window.location.href = "update.html?name="+ name;
+            $(location).attr('href','update.html?name='+name);
+        });
+    }
+
+    function getviewer(){
+        //var iimg = document.querySelector(".photo-img");
+        //console.log(iimg);
+        $(".table tr td #viewer-btn").click(function(num){
+            var temp = $(".table tr td #viewer-btn");
+            var tr = $(this).parent().parent();
+            var td = tr.children();
+            var name = td.eq(3).text();
+
+
+            openWin = window.open("viewer.html?name="+name,"viewer","width=1200, height=1000, resizable = no, scrollbars = no");
+
+        });
+    }
+    function getfiledown(){
+        $(".table tr td #js-btn").click(function(num) {
+            var tr = $(this).parent().parent();
+            var td = tr.children();
+            var name = td.eq(3).text();
+            //var name = getUrlValue();
+            console.log('getfiledown=' + name);
+            window.location = '/download/' + name;
+        });
+    }
+    function search()
+    {
+        $("#keyword").keyup(function(){
+            var k = $(this).val();
+            //console.log(k);
+            $(".table > tbody > tr").hide();
+            var temp = $(".table > tbody > tr > td:contains('" + k + "')");
+            //console.log(temp);
+            $(temp).parent().show();
+        })
+    }
+    function getdelete(){
+       //이 부분에 confirm 창을넣어야한다.
+        //log를 통해 confrim  은 log 를 남기는지 확인
+        $(".table tr td #delete-btn").click(function(){
+            var result = confirm('Are you sure you delete to this?');
+            if(result) {
+                var tr = $(this).parent().parent();
+                var td = tr.children();
+                var name = td.eq(3).text();
+                window.location ='/delete/' + name;
+                window.reload();
+            }
+            else{
+                return;
+            }
+        })
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+</html>

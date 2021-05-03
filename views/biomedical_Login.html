@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body width="100%" height="100%">
+    <form action="Login" method="post" class="loginForm">
+        <h2 id="logo">
+           <!-- <img src="https://scontent-gmp1-1.xx.fbcdn.net/v/t1.0-9/56485686_2148820585203449_1834839638355738624_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=KVdzuMlCrEoAX_K9WBT&_nc_ht=scontent-gmp1-1.xx&oh=81b3e4acb40b351a2a6d06cc6a59d6a4&oe=60747C06" width="50px" height="50px"/> -->
+            HUFS BME AI Web Viewer</h2>
+        <div class="idForm">
+            <input type="text" name="id" class="id" placeholder="ID">
+        </div>
+        <div class="passForm">
+            <input type="password" name="password" class="pw" placeholder="PW">
+        </div>
+        <input type="submit" class="btn" value="Login">
+
+        <a id="custom-login-btn" href="javascript:loginWithKakaoPopUp()"><img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"></a>
+        <button type="button" id = "kakao-logout-btn" onclick="logoutWithKakao()">카카오 로그아웃</button>
+        <script>
+            let button = () => {
+                alert('login Button !')
+            }
+        </script>
+        <div class="bottomText">
+            Don't you have ID? <a href="./biomedical_register.html">sign up</a>
+        </div>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src = "https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src = "https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+    <script>
+        Kakao.init('80e5abfb56863750bf6f10cda2bb7cfe'); //★ 수정 할 것 : SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        console.log(Kakao.isInitialized()); // SDK 초기화 여부를 판단합니다.
+
+        function loginWithKakaoPopUp() {
+            Kakao.Auth.loginForm({
+                success: function(authObj) {
+                    //alert(JSON.stringify(authObj));
+                    Kakao.Auth.setAccessToken(authObj.access_token);
+                    //★ 추가 할 것 : 로그인 성공 후 처리
+                    window.location.href='/';
+                },
+                fail: function(err) {
+                    alert(JSON.stringify(err))
+                },
+            })
+        }
+        function logoutWithKakao() {
+            if (!Kakao.Auth.getAccessToken()) {
+                console.log('Not logged in.');
+                alert("Not logged in.");
+                return;
+            }
+            console.log(Kakao.Auth.getAccessToken()); //before Logout
+            Kakao.Auth.logout(function() {
+                console.log(Kakao.Auth.getAccessToken()); //after Logout
+                //unlinkWithKakao();
+                alert("LogOut Success");
+                //★ 추가 할 것 : 로그아웃 성공 후 처리
+            });
+        }
+        function unlinkWithKakao(){
+            Kakao.API.request({
+                url: '/v1/user/unlink',
+                success: function(response) {
+                    console.log(response);
+                },
+                fail: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+    <script src="js/Login.js"></script>
+    </body>
+    </html>

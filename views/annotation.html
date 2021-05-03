@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <title>Annotation tool mode</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/easyannotation"></script>
+    <script>
+
+    </script>
+
+</head>
+<h1>annotation Tool</h1>
+<body>
+<button type="button" id="btn1" onclick="window.close()">❌Close</button>
+<table id="annotation_table" style="width:1200px;">
+    <tr>
+        <td>
+            <img style="margin-top: 50px; width:10px;height:10px;" id="hallstattImg" src=""/>
+        </td>
+        <td>
+            <img style="margin-top: 50px; width:10px;height:10px;" id="hallstattImgRes" src=""/>
+        </td>
+
+    </tr>
+</table>
+<script src="js/annotation.js"></script>
+<script>
+    init()
+    function init() {
+        var easyMarker1 = new easyannotation.AnnotatorContainer(
+            document.querySelector('#hallstattImg'), {
+                style: 'border: 1px solid #909090',
+                showClose: true,
+                toolbarItems: [
+                    {
+                        xtype: 'delete',
+                        title: 'Delete selected or all elements'
+                    },
+                    new easyannotation.TextToolbarItem(),
+                    new easyannotation.LineToolbarItem(),
+                    new easyannotation.ArrowToolbarItem(),
+                    new easyannotation.EllipseToolbarItem(),
+                    new easyannotation.RectToolbarItem(),
+                    new easyannotation.CalloutToolbarItem(),
+                    new easyannotation.ImageToolbarItem(),
+                    new easyannotation.BlurToolbarItem(),
+                    {
+                        itemId: 'save',
+                        xtype: 'save',
+                        title: 'Save changes and close annotator'
+                    }]
+            });
+
+        var easyMarkerRes = new easyannotation.AnnotatorContainer(document.querySelector('#hallstattImgRes'), {
+            style: 'border: 1px solid #909090'
+        });
+
+        easyMarker1.show(function(dataUrl) {
+            easyMarkerRes.clear();
+            easyMarkerRes.loadJSON(dataUrl);
+        }, easyannotation.ExportType.JSON);//JSON);
+
+        easyMarkerRes.show(function(dataUrl) {
+            easyMarker1.clear();
+            easyMarker1.loadJSON(dataUrl);
+        }, easyannotation.ExportType.JSON);
+
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="UTF-8">
+    <title>viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="css/viewer.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #9932cc; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,50%);
+        }
+        @keyframes spin {
+            0% { transform:translate(-50%,50%) rotate(0deg); }
+            100% { transform:translate(-50%,50%) rotate(360deg); }
+        }
+
+
+        #btn1{
+            margin: 10px;
+        }
+        #btn{
+            margin: 10px;
+        }
+        #btnSubmit{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="loader" id="loading" style="display:none"></div>
+
+<h1 class="blind">Image Viewer</h1>
+
+
+
+<div class="btn-group">
+    <button type="button" id="btn1" onclick="window.close()">❌Close</button>
+    <div class="js-download">
+        <canvas id="canvas" style="display:none"></canvas>
+       <!-- <input type="button" value = "Download" id = "btn" onclick = "getfiledown()" /> -->
+        <input type="button" id="btnSubmit" value="📂다운로드"/>
+        <button type="submit" onclick="Annotation()">🖍Annotation Mode</button>
+        <input type="button" value = "🖥predict" id = "btn" onclick = "getAI()"/>
+        <input type="button" value="Test" id="test_btn" onclick="javascript:test('./public/img/Pacman.gif');">
+    </div>
+</div>
+
+<ul class="ajax-results"></ul>
+</body>
+
+
+<script src="js/Viewer.js"></script>
+<script src="js/download.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/easyannotation"></script>
+<script src ="js/jquery.Wheelzoom.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#ex5').wheelzoom();
+    })
+</script>
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    function showPer(per) {
+        ctx.clearRect(0, 0, 400, 400);
+        //바깥쪽 써클 그리기
+        ctx.strokeStyle = "#ff6666";
+        ctx.lineWidth=10;
+        ctx.beginPath();
+        ctx.arc(60, 60, 50, 0, Math.PI * 2 * per / 100);
+        ctx.stroke();
+        //숫자 올리기
+        ctx.font = '32px serif';
+        ctx.fillStyle = "#000";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(per + '%', 60, 60);
+    }
+     var name = getUrlValue();
+     var url = '/img/' + name;
+    $("#btnSubmit").on("click", function(e) {
+        $.ajax({
+            url: url,
+            type : 'get',
+            xhrFields: { //response 데이터를 바이너리로 처리한다.
+                responseType: 'blob'
+            },
+            beforeSend : function() { //ajax 호출전 progress 초기화
+                showPer(0);
+                canvas.style.display = 'block';
+            },
+            xhr: function() { //XMLHttpRequest 재정의 가능
+                var xhr = $.ajaxSettings.xhr();
+                xhr.onprogress = function(e) {
+                    showPer(Math.floor(e.loaded / e.total * 100));
+                };
+                return xhr;
+            },
+            success : function(data) {
+                console.log("완료");
+                var blob = new Blob([data]);
+//파일저장
+                if (navigator.msSaveBlob) {
+                    return navigator.msSaveBlob(blob, url);
+                }
+                else {
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = url;
+                    link.click();
+                }
+            },
+            complete : function() {
+                canvas.style.display = 'none';
+            }
+        });
+    });
+
+    function getfiledown(){
+        var name = getUrlValue();
+        console.log('getfiledown' + name);
+        window.location = '/download/' + name;
+    }
+    function getAI(){
+     var name = getUrlValue();
+     window.location = '/AI/' + name;
+
+    }
+    function getUrlValue(key) {
+        //console.log(key);
+        var valueObject = {}, hash, value;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?'));
+        console.log(hashes);
+        hash = hashes.split('=');
+        //console.log(hash);
+        valueObject[hash] = hash[1];
+        //console.log(valueObject[hash]);
+        num = valueObject[hash];
+        if (key) {
+
+            if (valueObject[key]) {
+                return valueObject[key];
+            }
+
+            return "";
+        }
+        console.log(valueObject);
+        return valueObject[hash];
+    }
+    function Annotation(){
+        var move = confirm('Annotation Mode 로 이동 하시겠습니까?');
+        if(move){
+            var file_name = getUrlValue();
+            console.log(file_name);
+            window.location = "annotation.html?name="+ file_name;
+        }
+        else{
+            return;
+        }
+    }
+    //이쯤에서 script를 추가해야 할듯
+
+</script>
+<script>
+    $("#btn").on("click", function() {
+        $(".loader").fadeIn(); // id가 "divBox"인 요소를 느리게 점점 나타나게 함.
+    });
+</script>
+<script>
+    function test(imageName) {
+    LoadingWithMask('Pacman.gif');
+    }
+
+    function LoadingWithMask(gif){
+        //화면의 높이와 너비를 구합니다.
+        var maskHeight = $(document).height();
+        var maskWidth  = window.document.body.clientWidth;
+
+        //화면에 출력할 마스크를 설정해줍니다.
+        var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'>";
+
+
+        mask +="<div id='loadingImg'>";
+        mask +=" <img src='https://tistory2.daumcdn.net/tistory/1898109/skin/images/Pacman.gif'; align='center' style='position: relative; display: block; margin: 500px auto;'/>";
+        mask +="</div>";
+
+        mask += "</div>";
+        //화면에 레이어 추가
+        $('body')
+            .append(mask)
+
+        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+        $('#mask').css({
+            'width' : maskWidth
+            ,'height': maskHeight
+            ,'opacity' :'0.3'
+        });
+
+        //마스크 표시
+        $('#mask').show();
+
+        //로딩중 이미지 표시
+        //$('#loadingImg').show();
+
+    }
+</script>
+</html>

@@ -1,0 +1,119 @@
+﻿@charset "utf-8";
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+strong, sub, sup, var, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+    display: block;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*box모델에서 width가 border까지 확장되어 작업이 수월하다.*/
+body *, body *::before, body *::after {
+    box-sizing: border-box;
+}
+
+/*목록 초기화 스타일 모듈*/
+.reset-list ul,
+.reset-list ol,
+ul.reset-list,
+ol.reset-list {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    vertical-align: bottom;
+}
+
+.clearfix::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+/*ir기법. 이미지 대체 기법*/
+.ir {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999em;
+}
+
+.blind {
+    position: absolute;
+    text-indent: -9999em;
+    overflow: hidden;
+}
+
+/*콘텐츠 이미지에 적용되는 fluid image*/
+img.flex-img {
+    width: 100%;
+    height: auto;
+}
+
+/*원래 이미지 크기 유지*/
+img.keep-original-scale {
+    max-width: 100%
+}
+
+/*배경이미지에 적용되는 fluid bg image*/
+.flex-img-3-4 {
+    width: 100%;
+    padding-bottom: 75%;
+    background-size: cover;
+    background-position: center center;
+}
+
+.flex-img-9-16 {
+    width: 100%;
+    padding-bottom: 56.25%;
+    background-size: cover;
+    background-position: center center;
+}
+/*여기들에 높이만 px로 주면 responsive-crop이된다.*/
+
+img.horizontal-center-img {
+    margin-left: 50%;
+    transform: translateX(-50%);
+}

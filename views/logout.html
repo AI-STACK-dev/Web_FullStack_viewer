@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src='https://developers.kakao.com/sdk/js/kakao.min.js'></script>
+<script>
+    function logoutWithKakao(){
+        Kakao.init('80e5abfb56863750bf6f10cda2bb7cfe');
+        Kakao.Auth.logout();
+        alert('카카오 로그아웃 완료!');
+        //setCookie("kakao_login","",-1);
+        window.location.href='/';
+    }
+    logoutWithKakao();
+</script>
+
+</body>
+</html>

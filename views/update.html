@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Update window</h1>
+
+        <input type="text" id="input" name="description" size="25" placeholder="변경하고 싶은 설명을 적어주세요">
+        <button type="submit" onclick="input()">Update</button>
+        <button type="button" id="cancel-btn" onclick="location.href='/'">Cancel</button>
+
+    <script>
+        var temp;
+
+        function input()
+        {
+            var input = document.getElementById("input").value;
+            console.log(input);
+            var name = getUrlValue();
+            var temp_name = name.split('.');
+            window.location = '/update/'+ temp_name[0] +'&' + input;
+            window.reload();
+        }
+        function getUrlValue(key) {
+            console.log(key);
+            var valueObject = {}, hash, value;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?'));
+            console.log(hashes);
+            hash = hashes.split('=');
+            //console.log(hash);
+            valueObject[hash] = hash[1];
+            //console.log(valueObject[hash]);
+            num = valueObject[hash];
+            if (key) {
+
+                if (valueObject[key]) {
+                    return valueObject[key];
+                }
+
+                return "";
+            }
+            console.log(valueObject);
+            return valueObject[hash];
+        }
+    </script>
+</body>
+</html>
