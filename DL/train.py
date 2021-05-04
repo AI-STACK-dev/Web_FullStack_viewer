@@ -19,7 +19,7 @@ import time
 
 from typing import Any, Callable, cast, Dict, List, Optional, Tuple
 
-root_dir = '/mnt/hsyoo/WSI_image/' #수정
+root_dir = '****' #수정
 batch_size = 100
 learning_rate = 3e-4
 num_epochs = 50
@@ -369,8 +369,8 @@ def train(k):
         plt.legend(loc='lower left')
         plt.pause(.0001)
         plt.show()
-        fig.savefig(f'/mnt/hsyoo/loss/loss_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}.png')
-        fig.savefig(f'/mnt/pathology/hsyoo/loss/loss_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}.png')
+        fig.savefig(f'****/loss_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}.png')
+        fig.savefig(f'****/loss_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}.png')
 
         print('train loss: ',loss_train[-1])
         print('valid loss: ', loss_valid[-1])
@@ -379,10 +379,10 @@ def train(k):
         print('1 epoch : {0:.2f} s'.format(time.time() - end))
             
         print("epoch success")
-        torch.save(net.state_dict(),f'/mnt/hsyoo/n_pth_58/step1_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}_e_{epoch}.pth') #수정
-        torch.save(net.state_dict(),f'/mnt/pathology/hsyoo/n_pth_58/step1_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}_e_{epoch}.pth')
+        torch.save(net.state_dict(),f'****//step1_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}_e_{epoch}.pth') #수정
+        torch.save(net.state_dict(),f'****/step1_val_{valnum_list[0]}_{valnum_list[1]}_{valnum_list[2]}_{valnum_list[3]}_{valnum_list[4]}_e_{epoch}.pth')
         print("pth file save success")
     
 if __name__ == '__main__':
-    for k in range(3,6):
+    for k in range(1,6):
         train(k)
