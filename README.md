@@ -1,7 +1,7 @@
 # 조직 병리 이미지의 암 부위 시각화 및 웹 서비스 제작
 
 ```
-💡 팀 구성 : Web Front-End & Back-End, AI Developing
+💡 팀 구성 : Web Front-End & Back-End(FullStack), AI Developing
 ```
 
 
