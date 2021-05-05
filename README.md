@@ -10,7 +10,7 @@
 
 ```
 💡 - 큰 사이즈의 병리 이미지에서의 Annotation은 상당한 시간과 노동력이 소모된다.
-💡 - 현재 프로그램으로 제공되는 Whole Slide Image는 뷰어나 Annotation을 병원 내 서버 저장소나 로컬을 통해 진행 돼, 저장공간 등을 소모하게 된다. 
+💡 - 현재 프로그램으로 제공되는 Whole Slide Image는 뷰어나 Annotation을 병원 내 서버 저장소나 로컬을 통해 진행돼, 저장공간 등을 소모하게 된다. 
 ```
 
 
@@ -63,7 +63,7 @@ Cytomine은 저희가 **타겟**으로 삼는 서비스입니다. 웹 서버에�
 
 - 병리이미지를 웹 서버에서 관리할 수 있도록 할 예정입니다. - Node.js
 - 데이터베이스를 구축하여 이를 통해 병리이미지들을 보관할 예정입니다. - MySQL
-- Annotation Tool을 Web에서 제공할 수 있도록 할 예정입니다.
+- Annotation Tool을 Web에서 제공할 수 있도록 할 예정입니다.(서버에 구현 적용)
 - Zoom-in, Zoom-out의 기능을 제공할 예정입니다.
 - Annotation에 도움이 될 수 있는 병리이미지 Cancer 예측 모델을 제공할 예정입니다. - Pytorch
 - AI Cancer Segmentation의 속도를 더 빠르게 웹에 반영되도록 하는 방법을 찾고 있습니다. -Python
